@@ -1,0 +1,15 @@
+/ {
+    kbd {
+        compatible = "zmk,keyboard";
+        matrix-transform = <&default_transform>;
+    };
+
+    &combos {
+        compatible = "zmk,combos";
+        combo_reset {
+            timeout-ms = <100>;
+            key-positions = <0 1>;
+            bindings = <&bootloader>;
+        }
+    };
+};

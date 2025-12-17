@@ -1,0 +1,7 @@
+file_format: "http://zmk.dev/shield.schema.json"
+id: ctrl
+name: Ctrl 3x4 Macropad
+type: shield
+url: https://github.com/KONTRBND/CTRL
+features:
+  - keys

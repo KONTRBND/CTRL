@@ -1,0 +1,6 @@
+if SHIELD_CTRL
+
+config ZMK_KEYBOARD_NAME
+    default "CTRL 3x4"
+
+endif

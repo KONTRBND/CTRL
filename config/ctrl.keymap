@@ -8,14 +8,23 @@
         compatible = "zmk,keymap";
 
         default_layer {
-            display-name = "Passpad Layer";
+            display-name = "Numpad Layer";
 
             bindings = <
-                &kp N1   &kp N2   &kp N3
-                &kp N4   &kp N5   &kp N6
-                &kp N7   &kp N8   &kp N9
-                &kp DE_ASTERISK  &kp N0  &kp bootloader
+                &kp N1          &kp N2    &kp N3
+                &kp N4          &kp N5    &kp N6
+                &kp N7          &kp N8    &kp N9
+                &kp DE_ASTERISK &kp N0    &sys_reset
             >;
+        };
+    };
+
+    combos {
+        compatible = "zmk,combos";
+        combo_reset {
+            timeout-ms = <250>;
+            key-positions = <1 4 7>;
+            bindings = <&bootloader>;
         };
     };
 };

@@ -1,5 +1,2 @@
-/.west/
+/.cache/
 /build/
-/modules/
-/zephyr/
-/zmk/

@@ -8,11 +8,22 @@ SHIELD=ctrl
 
 cd /work
 
-BUILD_DIR="$(mktemp -d)"
-BASEDIR="$(pwd)"
 OUTDIR="$(pwd)/build"
-EXTRA_CMAKE_ARGS=("${SHIELD:+-DSHIELD="$SHIELD"}")
 CONFIG_PATH="config"
+
+BUILD_DIR="$(mktemp -d)"
+
+ZMK_LOAD_ARG="-DZMK_EXTRA_MODULES=$(pwd)"
+#BASEDIR="$(pwd)"
+BASEDIR="/tmp/zmk-config"
+
+EXTRA_CMAKE_ARGS=("${SHIELD:+-DSHIELD="$SHIELD"}" "$ZMK_LOAD_ARG")
+
+# --------------------
+
+rm -rf "${BASEDIR:?}/${CONFIG_PATH}"
+mkdir "${BASEDIR}/${CONFIG_PATH}"
+cp -R "${CONFIG_PATH}"/* "${BASEDIR}/${CONFIG_PATH}/"
 
 # --------------------
 
@@ -31,32 +42,33 @@ function run() {
 
 # --------------------
 
+run cd "${BASEDIR}"
+
+# --------------------
+
 if [ ! -d ".west" ]; then
-  log "Running: west init"
   run west init -l "${BASEDIR}/${CONFIG_PATH}"
 fi
 
 # --------------------
 
-log "Running: west update"
 run west update --fetch-opt=--filter=tree:0
 
 # --------------------
 
-log "Running: west zephyr-export"
 run west zephyr-export
-
-# --------------------
-
-log "Building for board: $BOARD"
-run west build -s zmk/app -d "${BUILD_DIR}" -b "${BOARD}" -- -DZMK_CONFIG="${BASEDIR}/${CONFIG_PATH}" "${EXTRA_CMAKE_ARGS[@]}"
 
 # --------------------
 
 mkdir -p "${OUTDIR}"
 rm -rf "${OUTDIR:?}"/*
 
-cp "${BUILD_DIR}/zephyr/zmk.uf2" "${OUTDIR}"
+#  --snippet zmk-usb-logging
+run west build -s zmk/app --build-dir "${BUILD_DIR}" --board "${BOARD}" -- -DZMK_CONFIG="${BASEDIR}/${CONFIG_PATH}" "${EXTRA_CMAKE_ARGS[@]}" || cp -R "${BUILD_DIR}/zephyr" "${OUTDIR}"
+
+# --------------------
+
+cp "${BUILD_DIR}/zephyr/zmk.uf2" "${BUILD_DIR}/zephyr/zephyr.dts" "${OUTDIR}"
 
 # --------------------
 

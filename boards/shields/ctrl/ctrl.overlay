@@ -1,0 +1,71 @@
+#include <dt-bindings/zmk/matrix_transform.h>
+
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+    };
+
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        wakeup-source;
+
+        diode-direction = "col2row";
+
+        col-gpios
+            = <&xiao_d 0 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 1 GPIO_ACTIVE_HIGH>
+            , <&xiao_d 2 GPIO_ACTIVE_HIGH>
+            ;
+
+        row-gpios
+            = <&xiao_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&xiao_d 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&xiao_d 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            , <&xiao_d 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            ;
+    };
+};
+
+&spi2 {
+    compatible = "nordic,nrf-spim";
+    status = "okay";
+
+    pinctrl-0 = <&spi2_display_default>;
+	pinctrl-1 = <&spi2_display_sleep>;
+	pinctrl-names = "default", "sleep";
+
+    cs-gpios = <&xiao_d 7 GPIO_ACTIVE_LOW>;
+
+    display@0 {
+        compatible = "waveshare,nv3030b";
+        reg = <0>;
+
+        spi-max-frequency = <8000000>;
+
+        width = <240>;
+        height = <280>;
+
+        dc-gpios = <&xiao_d 9 GPIO_ACTIVE_HIGH>;
+        reset-gpios = <&gpio0 10 GPIO_ACTIVE_LOW>;
+        bl-gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>;
+
+        panel-offset = <0>;
+    };
+};
+
+&pinctrl {
+    spi2_display_default: spi2_display_default {
+		group1 {
+			psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
+				<NRF_PSEL(SPIM_MOSI, 1, 15)>;
+		};
+	};
+
+	spi2_display_sleep: spi2_display_sleep {
+		group1 {
+			psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
+				<NRF_PSEL(SPIM_MOSI, 1, 15)>;
+			low-power-enable;
+		};
+	};
+};

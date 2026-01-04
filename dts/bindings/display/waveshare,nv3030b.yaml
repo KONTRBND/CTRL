@@ -1,0 +1,27 @@
+description: Zephyr Driver for waveshare displays with Embedded NV3030B Driver Chip
+
+compatible: "waveshare,nv3030b"
+
+include: [spi-device.yaml, display-controller.yaml]
+
+properties:
+  dc-gpios:
+    type: phandle-array
+    required: true
+    description: Data/Command select GPIO
+
+  reset-gpios:
+    type: phandle-array
+    required: true
+    description: Hardware reset GPIO
+
+  bl-gpios:
+    type: phandle-array
+    required: true
+    description: Backlight enable GPIO
+
+  panel-offset:
+    type: int
+    required: false
+    default: 0
+    description: Panel offset

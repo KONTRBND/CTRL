@@ -11,10 +11,10 @@
             display-name = "Numpad Layer";
 
             bindings = <
-                &kp N1          &kp N2    &kp N3
-                &kp N4          &kp N5    &kp N6
-                &kp N7          &kp N8    &kp N9
-                &kp DE_ASTERISK &kp N0    &sys_reset
+                &kp K_UNDO              &kp K_VOLUME_UP     &kp K_REDO
+                &kp K_PREVIOUS          &kp K_PLAY_PAUSE    &kp K_NEXT
+                &kp C_AL_CALCULATOR     &kp K_VOLUME_DOWN   &kp PRINTSCREEN
+                &kp C_AL_EMAIL          &kp K_WWW           &sys_reset
             >;
         };
     };
